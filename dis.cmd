@@ -1,0 +1,1 @@
+..\retroassembler\retroassembler.exe -d -D=$00FB -C=8080 BULNIK.GAM DIS.LST
