@@ -8,14 +8,14 @@
 ;6    `    a    b    c    d    e    f    g    h    i    j    k    l    m    n    o
 ;7    p    q    r    s    t    u    v    w    x    y    z    {    |    }    ~    DEL
 
-21=!
 00=.
-18=>
 08=<
-1a={LF}
 0d={CR}
+18=>
+1a={LF}
 1f={CLS}
 20=_
+21=!
 68=Х
 6f=О
 7b=Ш

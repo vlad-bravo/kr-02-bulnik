@@ -47,7 +47,7 @@ ENTRY_POINT:
 ; Zeroes to 0x04ff
    .dsb 183, 0
 
-;           00 00 - Junk bytes, may be absant
+;           00 00 - Junk bytes, may be absent
 _JUNC_BYTES:
    .byte 0x00, 0x00
 ;           0xE6  - Syncronization byte

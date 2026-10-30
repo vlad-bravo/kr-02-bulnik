@@ -1,0 +1,86 @@
+
+.MEMORYMAP
+    DEFAULTSLOT 0
+    SLOTSIZE 1133
+    SLOT 0 0x00FB
+.ENDME
+
+.ROMBANKMAP
+    BANKSTOTAL 1
+    BANKSIZE 1133
+    BANKS 1
+.ENDRO
+
+.stringmaptable symbols "symbols.tbl"
+
+.BANK 0 SLOT 0
+.ORGA 0x00FB
+
+;           0xE6  - Syncronization byte
+   .byte 0xe6
+;           XX XX - Start address of memory allocation, High byte First
+   .byte hibyte(ENTRY_POINT)
+   .byte lobyte(ENTRY_POINT)
+;           XX XX - End address of memory allocation, High byte First
+   .byte hibyte(_JUNC_BYTES)
+   .byte lobyte(_JUNC_BYTES-1)
+
+ENTRY_POINT:
+   lxi h,MSG
+PRINT_LOOP:                           
+   mov a,m
+   ana a
+   jz FIN
+   mov c,a
+   call 0xf809
+   inx h
+
+   lxi d,0x1388
+   mvi a,0x00
+DELAY_LOOP:
+   dcx d
+   nop
+   nop
+   nop
+   nop
+   cmp d
+   jnz DELAY_LOOP
+   cmp e
+   jnz DELAY_LOOP
+
+   jmp PRINT_LOOP
+FIN:
+   hlt
+
+MSG:
+   .stringmap symbols,"{CLS}______________________ШШШШ{CR}"
+   .stringmap symbols,"______________________{LF}Ш__Ш{CR}"
+   .stringmap symbols,"{LF}____________________ШШШШШШШШ{CR}"
+   .stringmap symbols,"{LF}____________________Ш______Ш{CR}"
+   .stringmap symbols,"{LF}____________________ШШШШШШШШ{CR}"
+   .stringmap symbols,"{LF}__________________ШШ________ШШ"
+   .stringmap symbols,"{LF}<<<<<<<<<<<<<<<ШШШ____________ШШШ{LF}<<<<<<<<<<<<<<<<<<<<<"
+   .stringmap symbols,"<<<<<<<<ШШШШ_____ШШ__________________ШШ<<<<<<<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>_____ШШШШ__________{CR}{CR}"
+   .stringmap symbols,"_{LF}___Ш__Ш___ШШШ____________________ШШШ___Ш__Ш__________{CR}"
+   .stringmap symbols,"{LF}_____Ш__Ш__ШШ___ООО_________ООО____ШШ__Ш__Ш___________{CR}{CR}"
+   .stringmap symbols,"{LF}_____Ш__Ш__Ш____ООО_________ООО_____Ш__Ш__Ш_____________{CR}"
+   .stringmap symbols,"{LF}______Ш__Ш_ШШ____О___________О_____ШШ_Ш__Ш______________{CR}{CR}"
+   .stringmap symbols,"_{LF}_____ШШ__ШШШШ______ШШШШШШШ_______ШШШШ__ШШ____________{CR}"
+   .stringmap symbols,"{LF}_______ШШШШШШШШ____ШШШ___ШШШ_____ШШШШШШШШ_____________{CR}"
+   .stringmap symbols,"{LF}_____________ШШШ________________ШШШ_____________________{CR}"
+   .stringmap symbols,"{LF}_______________ШШШ___ООООО____ШШШ_____________________{CR}"
+   .stringmap symbols,"{LF}________________ШШШ___ООО____ШШШ______________________{CR}"
+   .stringmap symbols,"{LF}__________________ШШ___О____ШШ{CR}"
+   .stringmap symbols,"{LF}____________________ШШ____ШШ{LF}"
+   .stringmap symbols,                  "<<<<<<<ШШШШШШ__________________________{CR}"
+   .stringmap symbols,"{LF}ХХХХХХХХХХХХХХХХХХХХ________ХХХХХХХХХХХХХХХХХ!!!!!!!!{LF}{LF}<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<_______________________."
+
+;           00 00 - Junk bytes, may be absent
+_JUNC_BYTES:
+   .byte 0x00, 0x00
+;           0xE6  - Syncronization byte
+_SYNCRO:
+   .byte 0xe6
+;           XX XX - Check summ, High byte First
+_CHECKSUM:
+   .byte 0x47, 0x7d
